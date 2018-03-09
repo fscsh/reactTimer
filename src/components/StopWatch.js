@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 
+
 export default class StopWatch extends Component{
     constructor(props) {
         super(props);
         this.state = {
             elapsedTime: 0,
             isRunning: false,
-            intervalFunc: ''
+            intervalFunc: '',
+            timeArr:[]
         }
     }
 
@@ -26,24 +28,34 @@ export default class StopWatch extends Component{
     clickReset = () => {
         clearInterval(this.intervalFunc);
         this.setState({
+            timeArr: [...this.state.timeArr, this.state.elapsedTime],
             elapsedTime: 0,
             isRunning: false
         });
     }
 
-    getTime = () => {
-        return this.state.elapsedTime;
-    }
+
 
     render() {
         return (
             <div>
-                <h1>elapsedTime: {this.state.elapsedTime} millisecond</h1>
-                {
-                    this.state.isRunning ? <button onClick={this.clickPause}>PAUSE</button>
-                    : <button onClick={this.clickStart}>START</button>
-                }
-                <button onClick={this.clickReset}>RESET</button>
+                <h1 className = "header">Timer</h1>
+                <div className ='contain'>
+                    {
+                    this.state.isRunning ? <button className ="button" id = 'startbutton' onClick={this.clickPause}>PAUSE</button>
+                    : <button className ="button" id = 'startbutton' onClick={this.clickStart}>START</button>
+                    }
+                    <button className = "button"  id = 'resetbutton' onClick={this.clickReset}>RESET</button>
+                </div>
+
+                <div className = 'elapsedTime'>
+                    <h2>elapsedTime: {this.state.elapsedTime} millisecond</h2>
+                    <ul>
+                        {
+                        this.state.timeArr.map((t, idx) => <li key={t+idx}>{t} millisecond</li>)
+                        }
+                    </ul>
+                </div>
             </div>
         )
     }
